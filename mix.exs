@@ -64,7 +64,13 @@ defmodule Jidoka.MixProject do
       {:crontab, "~> 1.2"},
       {:jason, "~> 1.4"},
       {:jsv, "~> 0.22"},
-      {:llm_db, "~> 2026.8.4"},
+      # `~> 2026.8.4` caps below 2026.9.0, which deadlocks against req_llm 1.24.0
+      # (`>= 2026.9.4 and < 2027.0.0`). Jidoka has no llm_db call site of its own
+      # — the declaration exists only to bound req_llm's catalog — so the cap is
+      # stale bookkeeping rather than a real compatibility statement. Widened to
+      # the same year range req_llm uses so the two cannot deadlock again on a
+      # monthly catalog release.
+      {:llm_db, ">= 2026.8.4 and < 2027.0.0"},
       {:lua, "~> 1.0.0-rc.0"},
       {:req_llm, "~> 1.21.0"},
       {:runic, "~> 0.1.0-alpha.7"},
